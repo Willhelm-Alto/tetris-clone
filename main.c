@@ -1,17 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <GL/glut.h>
-#include <time.h>
 #include "pieces.c"
-#define FPS 60
 
 struct point_s{ float x, y; };
 typedef struct point_s Point; 
 
 struct offset_s{ int x, y; };
 typedef struct offset_s Offset;
-
-int initalTime, finalTime, deltaTime, frameCount = 0;
 
 int windowWidth = 500, windowHeight = 500;
 
@@ -79,25 +75,13 @@ void drawGridMap(){
   }
 }
 
-void gameLoop(int){
-  glutPostRedisplay();
-  glutTimerFunc(1000/FPS, gameLoop, 0);
-}
+void gameLoop(){}
 
 void display(){
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
   drawPiece(T);
   drawGridMap();
   glutSwapBuffers();
-
-  frameCount++;
-  finalTime = time(NULL);
-  deltaTime = finalTime - initalTime;
-  if(deltaTime > 0){
-    printf("%f", frameCount / deltaTime);
-    frameCount = 0;
-    initalTime = finalTime;
-  };
 }
 
 void input(unsigned char key, int x, int y){
@@ -110,7 +94,6 @@ void input(unsigned char key, int x, int y){
 void init(){
   glClearColor(0.7, 0.7, 0.7, 0);
   gluOrtho2D(0,1024,512,0);  
-  initalTime = time(NULL);
 }
 
 void resize(int w, int h){
@@ -129,6 +112,6 @@ int main(int argc, char *argv[])
     glutDisplayFunc(display);
     glutReshapeFunc(resize);
     glutKeyboardFunc(input);
-    glutTimerFunc(1000 / FPS, gameLoop, 0);
+    glutIdleFunc(gameLoop);
     glutMainLoop();
 }

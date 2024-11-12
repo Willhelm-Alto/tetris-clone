@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 
 filename=$1
 if [[ -f ~/prog/opengl/tetris/$filename ]]; then
