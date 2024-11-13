@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <GL/glut.h>
 #include "pieces.c"
+#define WINDOW_WIDTH 500
+#define WINDOW_HEIGHT 500
 
 struct point_s{ float x, y; };
 typedef struct point_s Point; 
@@ -9,7 +11,7 @@ typedef struct point_s Point;
 struct offset_s{ int x, y; };
 typedef struct offset_s Offset;
 
-int windowWidth = 500, windowHeight = 500;
+int frameRate = 0, initalTime = 0, finalTime;
 
 void drawSquare(Point point,int size){     
   glBegin(GL_TRIANGLES);
@@ -24,7 +26,6 @@ void drawSquare(Point point,int size){
     glEnd();
 }
 
-Point gridPos = {350, 0};
 int mapSizeX = 10; 
 int mapSizeY = 20; 
 int size = 20;
@@ -61,6 +62,7 @@ void drawPiece(Piece piece){
   }
 }
 
+Point gridPos = {0, 0};
 void drawGridMap(){  
   for (int i = 0; i < mapSizeX; i++) {
     for (int j = 0; j < mapSizeY; j++) {
@@ -69,20 +71,19 @@ void drawGridMap(){
       } else {
         glColor3f(0, 0, 0);
       }
-      Point p = {i * (size + 2), j * (size + 2)};
+      Point p = {gridPos.x + i * (size + 2), gridPos.y + j * (size + 2)};
       drawSquare(p, size);
     }
   }
 }
 
-void gameLoop(){}
-
-void display(){
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
-  drawPiece(T);
+void setGridMapPos(int w, int h){
+  gridPos.x = (w / 2) - 100;
+  gridPos.y = h / 10;
   drawGridMap();
-  glutSwapBuffers();
 }
+
+void gameLoop(){}
 
 void input(unsigned char key, int x, int y){
   if(key == 'd'){
@@ -96,10 +97,18 @@ void init(){
   gluOrtho2D(0,1024,512,0);  
 }
 
+void display(){
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
+  drawPiece(T);
+  drawGridMap();
+  glutSwapBuffers();
+  glutPostRedisplay();
+}
+
 void resize(int w, int h){
-  windowWidth = w;
-  windowHeight = h;
-  glViewport(0,0,windowWidth, windowHeight);
+  glViewport(0,0, w, -h / 2);
+  setGridMapPos(w, h);
+  glutPostRedisplay();
 }
 
 int main(int argc, char *argv[])
