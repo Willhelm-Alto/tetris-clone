@@ -1,7 +1,8 @@
-struct piece_s{ int vertices[4][2]; };
+struct piece_s{int width; int vertices[4][2]; };
 typedef struct piece_s Piece;
 
 Piece J = {
+  2,
   {
     {1, 0},
     {1, 1},
@@ -11,6 +12,7 @@ Piece J = {
 };
 
 Piece L = {
+  2,
   {
     {0, 0},
     {0, 1},
@@ -20,6 +22,7 @@ Piece L = {
 };
 
 Piece Z = {
+  3,
   {
     {0, 0},
     {1, 0},
@@ -29,6 +32,7 @@ Piece Z = {
 };
 
 Piece S = {
+  3,
   {
     {0, 1},
     {1, 1},
@@ -38,6 +42,7 @@ Piece S = {
 };
 
 Piece I = {
+  1,
   {
     {0, 0},
     {0, 1},
@@ -47,6 +52,7 @@ Piece I = {
 };
 
 Piece O = {
+  2,
   {
     {0, 0},
     {1, 0},
@@ -56,6 +62,7 @@ Piece O = {
 };
 
 Piece T = {
+  3,
   {
     {0, 0},
     {1, 0},
@@ -63,3 +70,12 @@ Piece T = {
     {1, 1},
   }
 };
+
+
+// #define J J;
+// #define L L;
+// #define Z Z;
+// #define S S;
+// #define I I;
+// #define O O;
+// #define T T;
