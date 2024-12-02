@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <GL/glut.h>
 #include <stdbool.h>
+#include <time.h>
 
 #include "pieces.c"
 
@@ -102,14 +103,11 @@ void update(){
   }
 }
 
+Piece piecesArr[7];
+
 void start(){ 
-  piecesArr[0] = J;
-  piecesArr[1] = L;
-  piecesArr[2] = S; 
-  piecesArr[3] = Z;
-  piecesArr[4] = T;
-  piecesArr[5] = O;
-  piecesArr[6] = I;
+  srand(time(NULL));
+  int r = rand() % 7;
 }
 
 //===============================================================================================//
@@ -131,7 +129,7 @@ void init(){
 void display(){
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
   drawGridMap();
-  drawPiece(J, currentOffset);  
+  drawPiece(currentPiece, currentOffset);  
   glutSwapBuffers();
   glutPostRedisplay();
 }
