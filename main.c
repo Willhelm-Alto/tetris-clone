@@ -67,8 +67,7 @@ void drawPiece(Piece piece, Offset offset){
   for (int i = 0; i < 4; i++) {
     x = piece.vertices[i][0] + offset.x;
     y = piece.vertices[i][1] + offset.y;
-    map[y][x] = 1;
-    map[y][x - 1] = 0;
+    map[y][x] = 1; 
   } 
 }
 
@@ -105,9 +104,18 @@ void update(){
 
 Piece piecesArr[7];
 
-void start(){ 
+void start(){
+  piecesArr[0] = S;
+  piecesArr[1] = Z;
+  piecesArr[2] = L;
+  piecesArr[3] = J;
+  piecesArr[4] = T;
+  piecesArr[5] = O;
+  piecesArr[6] = I;
+
   srand(time(NULL));
   int r = rand() % 7;
+  currentPiece = piecesArr[r];
 }
 
 //===============================================================================================//
