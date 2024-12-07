@@ -43,9 +43,10 @@ int map[20][10] = {
 };
 
 Point gridPos = {0, 0};
-Offset currentOffset = {0, 0};
+Offset offset = {0, 0};
 Piece currentPiece;
 Piece piecesArr[7];
+Piece piecesQueue[5];
 
 //===============================================================================================//
 
@@ -62,13 +63,13 @@ void drawSquare(Point point,int size){
   glEnd();
 }
 
-void drawPiece(Piece piece, Offset offset){ 
-  int x, y;
+void drawPiece(Piece piece){ 
+  int x, y, x1, y1;
   for (int i = 0; i < 4; i++) {
     x = piece.vertices[i][0] + offset.x;
     y = piece.vertices[i][1] + offset.y;
-    map[y][x] = 1; 
-  } 
+    map[y][x] = 1;  
+  }
 }
 
 void drawGridMap(){  
@@ -91,18 +92,23 @@ void setGridMapPos(int w, int h){
   drawGridMap();
 }
 
+int randInt(int maxNum){
+  srand(time(NULL));
+  int r = rand() % maxNum;
+  return r;
+}
+
 void update(){
   frameCount++;
   currentTime = glutGet(GLUT_ELAPSED_TIME);
-   
-  if(currentTime - initialTime > 1000){
+
+  if(currentTime - initialTime > 100){
     initialTime = currentTime;
     currentTime = 0;
     fps = frameCount * 1000 / (initialTime - currentTime); 
+    // printf("teste\n");
   }
 }
-
-Piece piecesArr[7];
 
 void start(){
   piecesArr[0] = S;
@@ -112,18 +118,24 @@ void start(){
   piecesArr[4] = T;
   piecesArr[5] = O;
   piecesArr[6] = I;
-
-  srand(time(NULL));
-  int r = rand() % 7;
-  currentPiece = piecesArr[r];
+  
+  for (int i = 0; i < 4; i++) {
+    piecesQueue[i] = piecesArr[randInt(7)];
+  }
+  currentPiece = piecesArr[randInt(7)];
 }
 
 //===============================================================================================//
 
 void input(unsigned char key, int x, int y){
-  if(key == 'd'){
-    currentOffset.x++; 
-  }
+  switch(key){
+    case 'd':
+      offset.x++;
+    break;
+    case 'a':
+      offset.x--;
+    break;
+  } 
   glutPostRedisplay();
 }
 
@@ -137,7 +149,7 @@ void init(){
 void display(){
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
   drawGridMap();
-  drawPiece(currentPiece, currentOffset);  
+  drawPiece(currentPiece);  
   glutSwapBuffers();
   glutPostRedisplay();
 }
