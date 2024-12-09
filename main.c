@@ -43,10 +43,8 @@ int map[20][10] = {
 };
 
 Point gridPos = {0, 0};
-Offset offset = {0, 0};
-Piece currentPiece;
-Piece piecesArr[7];
-Piece piecesQueue[5];
+Offset offset = {0, 0}, newOffset = {0, 0};
+Piece currentPiece, piecesArr[7], piecesQueue[5];
 
 //===============================================================================================//
 
@@ -55,7 +53,7 @@ void drawSquare(Point point,int size){
     glVertex2f(point.x, point.y);
     glVertex2f(point.x, point.y + size);
     glVertex2f(point.x + size, point.y + size);
-  glEnd(); 
+  glEnd();
     glBegin(GL_TRIANGLES);
     glVertex2f(point.x + size, point.y + size);
     glVertex2f(point.x + size, point.y);
@@ -63,13 +61,20 @@ void drawSquare(Point point,int size){
   glEnd();
 }
 
-void drawPiece(Piece piece){ 
-  int x, y, x1, y1;
+void drawPiece(){ 
+  int x, y, x1, y1; 
+    for (int i = 0; i < 4; i++) {
+    x1 = currentPiece.vertices[i][0] + offset.x;
+    y1 = currentPiece.vertices[i][1] + offset.y;
+    map[y1][x1] = 0;
+  } 
+
   for (int i = 0; i < 4; i++) {
-    x = piece.vertices[i][0] + offset.x;
-    y = piece.vertices[i][1] + offset.y;
-    map[y][x] = 1;  
-  }
+    x = currentPiece.vertices[i][0] + newOffset.x;
+    y = currentPiece.vertices[i][1] + newOffset.y;
+    map[y][x] = 1;
+  } 
+  offset = newOffset;
 }
 
 void drawGridMap(){  
@@ -122,7 +127,7 @@ void start(){
   for (int i = 0; i < 4; i++) {
     piecesQueue[i] = piecesArr[randInt(7)];
   }
-  currentPiece = piecesArr[randInt(7)];
+  currentPiece = piecesArr[0];
 }
 
 //===============================================================================================//
@@ -130,10 +135,10 @@ void start(){
 void input(unsigned char key, int x, int y){
   switch(key){
     case 'd':
-      offset.x++;
+      newOffset.x++;
     break;
     case 'a':
-      offset.x--;
+      newOffset.x--;
     break;
   } 
   glutPostRedisplay();
@@ -149,7 +154,7 @@ void init(){
 void display(){
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
   drawGridMap();
-  drawPiece(currentPiece);  
+  drawPiece();  
   glutSwapBuffers();
   glutPostRedisplay();
 }
