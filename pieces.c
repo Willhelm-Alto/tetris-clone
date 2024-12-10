@@ -1,4 +1,4 @@
-struct piece_s{int vertices[4][2]; };
+struct piece_s{int vertices[4][2];};
 typedef struct piece_s Piece;
 
 Piece J = {

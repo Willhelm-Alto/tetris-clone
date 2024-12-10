@@ -121,10 +121,13 @@ void update(){
   frameCount++;
   currentTime = glutGet(GLUT_ELAPSED_TIME);
 
-  if(currentTime - initialTime > 100){
+  if(currentTime - initialTime > 1000){
     initialTime = currentTime;
     currentTime = 0;
-    fps = frameCount * 1000 / (initialTime - currentTime); 
+    fps = frameCount * 1000 / (initialTime - currentTime);
+    if(yMax < 19){
+      newOffset.y++;
+    } 
   }
 }
 
