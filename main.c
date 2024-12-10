@@ -45,6 +45,8 @@ int map[20][10] = {
 Point gridPos = {0, 0};
 Offset offset = {0, 0}, newOffset = {0, 0};
 Piece currentPiece, piecesArr[7], piecesQueue[5];
+bool canMove = true;
+int xMax = 0, xMin = 0, yMax = 0;
 
 //===============================================================================================//
 
@@ -68,10 +70,22 @@ void drawPiece(){
     y1 = currentPiece.vertices[i][1] + offset.y;
     map[y1][x1] = 0;
   } 
-
+  
+  xMax = 0;
+  xMin = 100;
+  yMax = 0;
   for (int i = 0; i < 4; i++) {
     x = currentPiece.vertices[i][0] + newOffset.x;
     y = currentPiece.vertices[i][1] + newOffset.y;
+    if(x > xMax){
+      xMax = x;
+    }
+    if(x < xMin){
+      xMin = x;
+    }
+    if(y > yMax){
+      yMax = y;
+    }
     map[y][x] = 1;
   } 
   offset = newOffset;
@@ -111,7 +125,6 @@ void update(){
     initialTime = currentTime;
     currentTime = 0;
     fps = frameCount * 1000 / (initialTime - currentTime); 
-    // printf("teste\n");
   }
 }
 
@@ -135,10 +148,19 @@ void start(){
 void input(unsigned char key, int x, int y){
   switch(key){
     case 'd':
-      newOffset.x++;
+      if(xMax < 9){
+        newOffset.x++;
+      }
     break;
     case 'a':
-      newOffset.x--;
+      if(xMin > 0){
+        newOffset.x--;
+      }
+    break;
+    case 's':
+      if(yMax < 19){
+        newOffset.y++;
+      }
     break;
   } 
   glutPostRedisplay();
