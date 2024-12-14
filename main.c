@@ -76,6 +76,8 @@ void drawPiece(){
     map[y1][x1] = 0;   
     x = currentPiece.vertices[i][0] + newOffset.x;
     y = currentPiece.vertices[i][1] + newOffset.y;
+    map[y][x] = 1;
+
     if(x > xMax){
       xMax = x;
     }
@@ -85,10 +87,6 @@ void drawPiece(){
     if(y > yMax){
       yMax = y;
     }
-    if(y == 19){
-      //TODO: criar uma nova peça quando o sinal for dado 
-    }
-    map[y][x] = 1;
   } 
   offset = newOffset;
 }
@@ -119,18 +117,8 @@ int randInt(int maxNum){
   return r;
 }
 
-void update(){
-  frameCount++;
-  currentTime = glutGet(GLUT_ELAPSED_TIME);
-
-  if(currentTime - initialTime > 1000){
-    initialTime = currentTime;
-    currentTime = 0;
-    fps = frameCount * 1000 / (initialTime - currentTime);
-    if(yMax < 19){
-      newOffset.y++;
-    } 
-  }
+Piece getRandomPiece(){
+  return piecesArr[randInt(7)];
 }
 
 void start(){
@@ -143,9 +131,23 @@ void start(){
   piecesArr[6] = I;
   
   for (int i = 0; i < 4; i++) {
-    piecesQueue[i] = piecesArr[randInt(7)];
+    piecesQueue[i] = getRandomPiece(); 
   }
-  currentPiece = piecesArr[0];
+  currentPiece = getRandomPiece();
+}
+
+void update(){
+  frameCount++;
+  currentTime = glutGet(GLUT_ELAPSED_TIME);
+
+  if(currentTime - initialTime > 1000){
+    initialTime = currentTime;
+    currentTime = 0;
+    fps = frameCount * 1000 / (initialTime - currentTime);
+    if(yMax < 19){
+      newOffset.y++;
+    }
+  }
 }
 
 //===============================================================================================//
@@ -184,7 +186,12 @@ void init(){
 void display(){
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
   drawGridMap();
-  drawPiece();  
+  drawPiece();
+  if(yMax == 19){
+    newOffset.x = 0;
+    newOffset.y = 0;
+    currentPiece = getRandomPiece();
+  }
   glutSwapBuffers();
   glutPostRedisplay();
 }
