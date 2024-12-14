@@ -65,16 +65,15 @@ void drawSquare(Point point,int size){
 
 void drawPiece(){ 
   int x, y, x1, y1; 
-    for (int i = 0; i < 4; i++) {
-    x1 = currentPiece.vertices[i][0] + offset.x;
-    y1 = currentPiece.vertices[i][1] + offset.y;
-    map[y1][x1] = 0;
-  } 
   
   xMax = 0;
   xMin = 100;
   yMax = 0;
+
   for (int i = 0; i < 4; i++) {
+    x1 = currentPiece.vertices[i][0] + offset.x;
+    y1 = currentPiece.vertices[i][1] + offset.y;
+    map[y1][x1] = 0;   
     x = currentPiece.vertices[i][0] + newOffset.x;
     y = currentPiece.vertices[i][1] + newOffset.y;
     if(x > xMax){
@@ -85,6 +84,9 @@ void drawPiece(){
     }
     if(y > yMax){
       yMax = y;
+    }
+    if(y == 19){
+      //TODO: criar uma nova peça quando o sinal for dado 
     }
     map[y][x] = 1;
   } 
@@ -164,6 +166,9 @@ void input(unsigned char key, int x, int y){
       if(yMax < 19){
         newOffset.y++;
       }
+    break;
+    case 32:
+      //TODO: insta drop
     break;
   } 
   glutPostRedisplay();
